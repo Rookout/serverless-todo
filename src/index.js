@@ -1,10 +1,11 @@
+const rookout = require('rookout/lambda');
 const aws = require('aws-sdk');
 const doc = new aws.DynamoDB.DocumentClient();
 const fs = require('fs');
 const mime = require('mime-types');
 const path = require('path');
 
-exports.handler = main;
+exports.handler = rookout.wrap(main);
 const key = 'user_key';
 
 const routes = {

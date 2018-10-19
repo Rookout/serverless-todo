@@ -6,6 +6,15 @@ Globals:
     BinaryMediaTypes:
       # The ~1 will be replaced with / when deployed
       - '*~1*'
+Parameters: 
+  RookoutToken: 
+    Type: String
+    Default: ""
+    Description: Rookout Organizational Token
+  RookoutRookTags: 
+    Type: String
+    Default: serverlesstodo
+    Description: Rookout Rook Tags
 Resources:
   siteFunction:
     Type: AWS::Serverless::Function
@@ -13,12 +22,13 @@ Resources:
       Description: React TodoMVC with a Serverless backend
       Handler: src/index.handler
       Runtime: nodejs8.10
+      MemorySize: 1536
       CodeUri: build/todo.zip
       Policies:
         - DynamoDBCrudPolicy:
             TableName:
               Ref: todoTable
-      Timeout: 10
+      Timeout: 30
       Events:
         root:
           Type: Api
@@ -39,5 +49,9 @@ Resources:
         Variables:
           TABLE:
             Ref: todoTable
+          ROOKOUT_TOKEN:
+            Ref: RookoutToken
+          ROOKOUT_ROOK_TAGS:
+            Ref: RookoutRookTags
   todoTable:
     Type: AWS::Serverless::SimpleTable
